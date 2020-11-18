@@ -76,3 +76,6 @@
       ((string=? pet "dog") #f)
       ((string=? pet "cat") #t)
       ((string=? pet "snake") #f))))
+
+; (cute? "parrot")
+
