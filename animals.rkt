@@ -293,7 +293,7 @@ Weight w ...;
 (define list-sum
   (lambda (list)
     (cond
-      ((empty? list) 0)
+      ((empty? list) 0) ; neutrales Element
       ((cons? list)
        (+ (first list) ; erstes Element
           (list-sum (rest list))))))) ; Summe der restlichen Elemente
@@ -305,3 +305,38 @@ Weight w ...;
               #t)
 (check-expect (all-even? (cons 2 (cons 3 (cons 8 empty))))
               #f)
+
+(define all-even?
+  (lambda (list)
+    (cond
+      ((empty? list) #t) ; neutrales Element
+      ((cons? list)
+       (and (even? (first list))
+            (all-even? (rest list)))))))
+
+; Sind alle Zahlen einer Liste positiv?
+(: all-positive? (list-of-numbers -> boolean))
+
+(check-expect (all-positive? (cons 2 (cons 3 (cons 4 (cons 1 empty)))))
+              #t)
+(check-expect (all-positive? (cons 2 (cons -1 (cons 4 empty))))
+              #f)
+
+(define all-positive?
+  (lambda (list)
+    (cond
+      ((empty? list) #t)
+      ((cons? list)
+       (and (positive? (first list))
+            (all-positive? (rest list)))))))
+
+(define all?
+  (lambda (p? list)
+    (cond
+      ((empty? list) #t)
+      ((cons? list)
+       (and (p? (first list))
+            (all? p? (rest list)))))))
+
+
+ 
