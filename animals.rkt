@@ -330,6 +330,21 @@ Weight w ...;
        (and (positive? (first list))
             (all-positive? (rest list)))))))
 
+; Haben alle Elemente der Liste eine bestimmte Eigenschaft?
+(: all? ((number -> boolean) list-of-numbers -> boolean))
+
+; Higher-Order-Funktion
+
+(check-expect (all? even? (cons 2 (cons 4 (cons 6 empty))))
+              #t)
+(check-expect (all? even? (cons 2 (cons 5 (cons 6 empty))))
+              #f)
+
+(check-property
+ (for-all ((list list-of-numbers))
+   (expect (all? positive? list)
+           (all-positive? list))))
+
 (define all?
   (lambda (p? list)
     (cond
