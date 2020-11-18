@@ -59,8 +59,12 @@ Weight w ...;
 ; Zustand zu einem bestimmten Zeitpunkt:
 (define-record armadillo
   make-armadillo
+  armadillo? ; Prädikat, nach dem Konstruktor
   (armadillo-liveness liveness)
   (armadillo-weight kg))
+
+; Prädikat, vgl. instanceof
+(: armadillo? (any -> boolean))
 
 (define dillo1 (make-armadillo "alive" 10)) ; Gürteltier, lebendig, 10kg
 (define dillo2 (make-armadillo "dead" 8)); Gürteltier, tot, 8kg
@@ -148,3 +152,22 @@ Weight w ...;
 ; Ein Tier ist eins der folgenden:
 ; - Gürteltier
 ; - Papagei
+; Fallunterscheidung, keine Aufzählung
+; gemischten Daten
+(define animal
+  (signature
+   (mixed armadillo parrot)))
+
+; Tier überfahren
+(: run-over-animal (animal -> animal))
+
+(check-expect (run-over-animal dillo1)
+              (run-over-dillo dillo1))
+(check-expect (run-over-animal parrot1)
+              (run-over-parrot parrot1))
+
+(define run-over-animal
+  (lambda (animal)
+    (cond
+      (... ...)
+      (... ...))))
