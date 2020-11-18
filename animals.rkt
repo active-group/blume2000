@@ -11,6 +11,47 @@
   (signature
    natural))
 
+; Ein Gewicht hat folgende Eigenschaft:
+; - eine Zahl mit g
+(define-record weight
+  make-weight-from-g
+  (weight-g number))
+
+(: make-weight-from-kg (number -> weight))
+
+(define make-weight-from-kg
+  (lambda (kg)
+    (make-weight-from-g (* 1000 kg))))
+
+(define weight-kg
+  (lambda (weight)
+    (/ (weight-g weight) 1000)))
+
+#|
+class Weight {
+  private final double kg;
+  public double getKg() {
+    return this.kg;
+  }
+}
+
+Weight w ...;
+
+... w.kg ...
+|#
+
+; Gewicht aus Anzahl g erzeugen
+#;(: make-weight-from-g (natural -> weight))
+
+(check-expect (make-weight-from-g 1500)
+              (make-weight-from-kg 1.5))
+ 
+#;(define make-weight-from-g
+  (lambda (g)
+    (make-weight-from-kg (/ g 1000))))
+
+
+
 ; Ein Gürteltier hat folgende Eigenschaften:
 ; - tot oder lebendig
 ; - Gewicht
@@ -19,3 +60,6 @@
   make-armadillo
   (armadillo-liveness liveness)
   (armadillo-weight kg))
+
+(define dillo1 (make-armadillo "alive" 10)) ; Gürteltier, lebendig, 10kg
+(define dillo2 (make-armadillo "dead" 8)); Gürteltier, tot, 8kg
