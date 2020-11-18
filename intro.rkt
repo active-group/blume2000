@@ -4,3 +4,7 @@
 ; Schulung Blume 2000
 (define s1 (star 50 "solid" "green"))
 (define c1 (circle 50 "outline" "gold"))
+
+(define o1 (overlay s1 c1)) ; Kombinator
+(define b1 (beside s1 c1))
+(define a1 (above s1 c1))
