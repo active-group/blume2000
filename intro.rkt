@@ -13,10 +13,23 @@
 ;(overlay (beside s1 c1) (above s1 c1))
 ;(overlay (beside c1 sq1) (above c1 sq1))
 
+; Kurzbeschreibung
+; Muster aus zwei Bildern zusammensetzen
+; Signatur-Deklaration
+(: pattern (image image -> image))
+
+; Beispiele/Tests
+(check-expect (pattern c1 s1)
+              (overlay
+               (beside c1 s1)
+               (above c1 s1)))
+
+; Definition
 (define pattern
   (lambda (image1 image2)
     (define b (beside image1 image2))
     (overlay b
              (above image1 image2))))
  
-(pattern c1 sq1)
+;(pattern c1 sq1)
+
