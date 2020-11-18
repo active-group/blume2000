@@ -126,3 +126,8 @@
   (lambda (msm)
     (make-time (quotient msm 60)
                (remainder msm 60))))
+
+; Brüche:
+; 1. Datendefinition + zugehöriger Code
+; 2. Funktion, um 2 Brüche zu addieren
+; 3. Funktion, um Bruch zu kürzen
