@@ -79,3 +79,38 @@
 
 ; (cute? "parrot")
 
+
+; Uhrzeit besteht aus/hat folgende Eigenschaften:
+; - Stunde
+; - Minute
+; zusammengesetzte Daten
+(define hour
+  (signature
+   (combined natural
+             (predicate
+              (lambda (n)
+                (and (>= n 0)
+                     (< n 24)))))))
+   
+
+(define-record time
+  make-time ; Konstruktor
+  (time-hour hour) ; Selektor
+  (time-minute natural))
+
+(: make-time (hour natural -> time))
+(: time-hour (time -> hour))
+(: time-minute (time -> natural))
+   
+(define time1 (make-time 12 24)) ; 12:24 Uhr
+
+; Minuten seit Mitternacht
+(: msm (time -> natural))
+
+(check-expect (msm (make-time 0 0)) 0)
+(check-expect (msm time1) (+ (* 12 60) 24))
+
+(define msm
+  (lambda (time)
+    (+ (* (time-hour time) 60)
+       (time-minute time))))
