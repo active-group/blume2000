@@ -131,3 +131,34 @@
 ; 1. Datendefinition + zugehöriger Code
 ; 2. Funktion, um 2 Brüche zu addieren
 ; 3. Funktion, um Bruch zu kürzen
+
+; Ein Bruch besteht aus:
+; - Zähler
+; - Nenner
+(define-record bruch
+  mach-bruch
+  (zähler integer)
+  (nenner natural))
+
+(: mach-bruch (integer natural -> bruch))
+(: zähler (bruch -> integer))
+(: nenner (bruch -> natural))
+
+(define bruch1 (mach-bruch 3 4)) ; drei viertel
+(define bruch2 (mach-bruch 2 3)) ; zwei drittel
+
+; 2 Brüche addieren
+(: bruch-plus (bruch bruch -> bruch))
+
+(check-expect (bruch-plus bruch1 bruch2)
+              (mach-bruch 17 12))
+
+(define bruch-plus
+  (lambda (bruch1 bruch2)
+    (mach-bruch
+     (+ (* (zähler bruch1) (nenner bruch2))
+        (* (zähler bruch2) (nenner bruch1)))
+     (* (nenner bruch1)
+        (nenner bruch2)))))
+    
+; 
