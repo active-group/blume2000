@@ -56,6 +56,7 @@ Weight w ...;
 ; - tot oder lebendig
 ; - Gewicht
 ; zusammengesetzte Daten
+; Zustand zu einem bestimmten Zeitpunkt:
 (define-record armadillo
   make-armadillo
   (armadillo-liveness liveness)
@@ -63,3 +64,18 @@ Weight w ...;
 
 (define dillo1 (make-armadillo "alive" 10)) ; Gürteltier, lebendig, 10kg
 (define dillo2 (make-armadillo "dead" 8)); Gürteltier, tot, 8kg
+
+; Gürteltier überfahren
+; Java: class Armadillo { void runOver() { this.liveness = Dead } }
+(: run-over-dillo (armadillo -> armadillo))
+
+(check-expect (run-over-dillo dillo1)
+              (make-armadillo "dead" 10))
+(check-expect (run-over-dillo dillo2)
+              dillo2)
+
+(define run-over-dillo
+  (lambda (dillo)
+    (make-armadillo "dead"
+                    (armadillo-weight dillo))))
+    
