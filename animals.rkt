@@ -78,4 +78,16 @@ Weight w ...;
   (lambda (dillo)
     (make-armadillo "dead"
                     (armadillo-weight dillo))))
-    
+
+#;(cond
+  ((string=? (dillo-liveness dillo1) "dead") ...)
+  ((string=? (dillo-liveness dillo1) "alive") ...))
+
+#;(cond
+  ((string=? (dillo-liveness dillo1) "dead") ...)
+  (else ...))
+
+#;(if (string=? (dillo-liveness dillo1) "dead")
+    ... ; Konsequente, "then-Zweig"
+    ...) ; Alternative, "else-Zweig"
+
