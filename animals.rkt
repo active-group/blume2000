@@ -168,9 +168,60 @@ Weight w ...;
 (check-expect (run-over-animal parrot1)
               (run-over-parrot parrot1))
 
+(check-property
+ (for-all ((d armadillo))
+   (armadillo? (run-over-animal d))))
+
+#;(check-property
+ (for-all ((d animal))
+   (parrot? (run-over-animal d))))
+
 (define run-over-animal
   (lambda (animal)
     (cond
       ((armadillo? animal) (run-over-dillo animal))
       ((parrot? animal) (run-over-parrot animal)))))
+
+; Ein Blumenstrauß ist eins der folgenden:
+; - eine Blume
+; - eine Kombinationsstrauß aus zwei Blumensträußen
+;                                    ^^^^^^^^^^^^^^
+;                                    Selbstreferenzen
+(define blumenstrauß
+  (signature
+   (mixed blume
+          kombinationsstrauß)))
+
+; Eine Blume ist eins der folgenden:
+; - Rose
+; - Tulpe
+; - Lilie
+(define blume
+  (signature
+   (enum "Rose" "Tulpe" "Lilie")))
+
+; Ein Kombinationsstrauß besteht aus:
+; - ein Blumenstrauß
+; - noch ein Blumenstrauß
+(define-record kombinationsstrauß
+  make-kombinationsstrauß
+  kombinationsstrauß?
+  (kombination-strauß1 blumenstrauß)
+  (kombination-strauß2 blumenstrauß))
+
+(: strauß1 blumenstrauß)
+(define strauß1 "Rose")
+(: strauß2 blumenstrauß)
+(define strauß2 "Lilie")
+(: strauß3 blumenstrauß)
+(define strauß3 (make-kombinationsstrauß strauß1 strauß2))
+(: strauß4 blumenstrauß)
+(define strauß4 (make-kombinationsstrauß "Tulpe" "Lilie"))
+(define strauß5 (make-kombinationsstrauß strauß3 strauß4))
+
+; Wieviele Blumen einer Sorte im Blumenstrauß?
+(: wieviele-blumen (blumenstrauß blume -> natural))
+
+(check-expect (wieviele-blumen strauß3 "Rose") 1)
+(check-expect (wieviele-blumen strauß4 "Lilie") 2)
 
