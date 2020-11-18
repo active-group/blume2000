@@ -161,4 +161,14 @@
      (* (nenner bruch1)
         (nenner bruch2)))))
     
-; 
+; Bruch kürzen
+(: kürzen (bruch -> bruch))
+
+(check-expect (kürzen (mach-bruch 21 14))
+              (mach-bruch 3 2))
+
+(define kürzen
+  (lambda (bruch)
+    (define teiler (gcd (zähler bruch) (nenner bruch)))
+    (mach-bruch (/ (zähler bruch) teiler)
+                (/ (nenner bruch) teiler))))
