@@ -96,7 +96,15 @@ Weight w ...;
 (: feed-dillo (armadillo kg -> armadillo))
 
 (check-expect (feed-dillo dillo1 3)
-              (make-dillo "alive" 13))
-(check-expect (feed-dillo dillo2)
+              (make-armadillo "alive" 13))
+(check-expect (feed-dillo dillo2 5)
               dillo2)
 
+(define feed-dillo
+  (lambda (dillo amount)
+    (make-armadillo (armadillo-liveness dillo)
+                    (cond
+                      ((string=? (armadillo-liveness dillo) "dead")
+                       (armadillo-weight dillo))
+                      ((string=? (armadillo-liveness dillo) "alive")
+                       (+ (armadillo-weight dillo) amount))))))
