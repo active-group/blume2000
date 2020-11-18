@@ -281,4 +281,6 @@ Weight w ...;
   (first number)
   (rest list-of-numbers))
 
-(define l1 (cons 17 empty)) ; 1elementige 
+(define l1 (cons 17 empty)) ; 1elementige Liste: 17
+(define l2 (cons 3 (cons 17 empty))) ; 2elementige Liste: 3 17
+(define l3 (cons 5 l2)) ; 3elementige Liste: 5 3 17
