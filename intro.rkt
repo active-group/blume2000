@@ -4,7 +4,19 @@
 ; Schulung Blume 2000
 (define s1 (star 50 "solid" "green"))
 (define c1 (circle 50 "outline" "gold"))
+(define sq1 (square 100 "solid" "blue"))
 
 (define o1 (overlay s1 c1)) ; Kombinator
 (define b1 (beside s1 c1))
 (define a1 (above s1 c1))
+
+;(overlay (beside s1 c1) (above s1 c1))
+;(overlay (beside c1 sq1) (above c1 sq1))
+
+(define pattern
+  (lambda (image1 image2)
+    (define b (beside image1 image2))
+    (overlay b
+             (above image1 image2))))
+ 
+(pattern c1 sq1)
