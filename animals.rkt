@@ -284,3 +284,24 @@ Weight w ...;
 (define l1 (cons 17 empty)) ; 1elementige Liste: 17
 (define l2 (cons 3 (cons 17 empty))) ; 2elementige Liste: 3 17
 (define l3 (cons 5 l2)) ; 3elementige Liste: 5 3 17
+
+; Summe der Listenelemente berechnen
+(: list-sum (list-of-numbers -> number))
+
+(check-expect (list-sum l3) 25)
+
+(define list-sum
+  (lambda (list)
+    (cond
+      ((empty? list) 0)
+      ((cons? list)
+       (+ (first list) ; erstes Element
+          (list-sum (rest list))))))) ; Summe der restlichen Elemente
+
+; Sind alle Zahlen einer Liste gerade?
+(: all-even? (list-of-numbers -> boolean))
+
+(check-expect (all-even? (cons 2 (cons 4 (cons 6 empty))))
+              #t)
+(check-expect (all-even? (cons 2 (cons 3 (cons 8 empty))))
+              #f)
