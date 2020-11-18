@@ -200,6 +200,20 @@ Weight w ...;
   (signature
    (enum "Rose" "Tulpe" "Lilie")))
 
+; Ist Objekt eine Blume?
+(: blume? (any -> boolean))
+
+(check-expect (blume? "Rose") #t)
+(check-expect (blume? "Mike") #f)
+(check-expect (blume? dillo1) #f)
+
+(define blume?
+  (lambda (object)
+    (and (string? object)
+         (or (string=? object "Rose")
+             (string=? object "Tulpe")
+             (string=? object "Lilie")))))
+
 ; Ein Kombinationsstrauß besteht aus:
 ; - ein Blumenstrauß
 ; - noch ein Blumenstrauß
@@ -208,6 +222,10 @@ Weight w ...;
   kombinationsstrauß?
   (kombination-strauß1 blumenstrauß)
   (kombination-strauß2 blumenstrauß))
+
+; (: + (number number -> number))
+; (: overlay (image image -> image))
+(: make-kombinationsstrauß (blumenstrauß blumenstrauß -> blumenstrauß))
 
 (: strauß1 blumenstrauß)
 (define strauß1 "Rose")
@@ -223,5 +241,44 @@ Weight w ...;
 (: wieviele-blumen (blumenstrauß blume -> natural))
 
 (check-expect (wieviele-blumen strauß3 "Rose") 1)
-(check-expect (wieviele-blumen strauß4 "Lilie") 2)
+(check-expect (wieviele-blumen strauß5 "Lilie") 2)
 
+(define wieviele-blumen
+  (lambda (blumenstrauß blume)
+    (cond
+      ((blume? blumenstrauß)
+       (if (string=? blume blumenstrauß)
+           1
+           0))
+      ((kombinationsstrauß? blumenstrauß)
+       (+ (wieviele-blumen (kombination-strauß1 blumenstrauß) blume)
+          (wieviele-blumen (kombination-strauß2 blumenstrauß) blume))))))
+
+; Eine Liste ist eins der folgenden:
+; - die leere Liste
+; - eine Cons-Liste aus erstem Element und Rest-Liste
+;                                               ^^^^^ Selbstbezug
+(define list-of-numbers
+  (signature
+   (mixed empty-list
+          cons-list)))
+  
+; Die leere Liste hat keine Eigenschaften
+(define-record empty-list
+  make-empty-list
+  empty?
+  ; keine Felder
+  )
+
+(define empty (make-empty-list)) ; "die" leere Liste
+
+; Eine Cons-Liste besteht aus:
+; - erstes Element
+; - Rest-Liste
+(define-record cons-list
+  cons
+  cons?
+  (first number)
+  (rest list-of-numbers))
+
+(define l1 (cons 17 empty)) ; 1elementige 
