@@ -33,3 +33,46 @@
  
 ;(pattern c1 sq1)
 
+; Datenanalyse
+; Datendefinition
+; Ein Haustier ist eins der folgenden:
+; - Hund
+; - Katze
+; - Schlange
+; Fallunterscheidung
+; speziell: Aufzählung
+(define pet
+  (signature
+   (enum "dog" "cat" "snake")))
+
+; Ist Haustier niedlich?
+(: cute? (pet -> boolean))
+
+(check-expect (cute? "dog") #f)
+(check-expect (cute? "cat") #t)
+(check-expect (cute? "snake") #f)
+
+; Gerüst
+#;(define cute?
+  (lambda (pet)
+    ...))
+
+; Schablone
+#;(define cute?
+  (lambda (pet)
+    (cond ; Verzweigung / Conditional
+      ; jeder Zweig: (Bedingung Antwort)
+      ; ein Zweig pro Fall
+      ((string=? pet "dog") ...)
+      ((string=? pet "cat") ...)
+      ((string=? pet "snake") ...)
+      )))
+
+(define cute?
+  (lambda (pet)
+    (cond ; Verzweigung / Conditional
+      ; jeder Zweig: (Bedingung Antwort)
+      ; ein Zweig pro Fall
+      ((string=? pet "dog") #f)
+      ((string=? pet "cat") #t)
+      ((string=? pet "snake") #f))))
