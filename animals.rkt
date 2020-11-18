@@ -9,7 +9,7 @@
 
 (define kg
   (signature
-   natural))
+   number))
 
 ; Ein Gewicht hat folgende Eigenschaft:
 ; - eine Zahl mit g
@@ -108,3 +108,29 @@ Weight w ...;
                        (armadillo-weight dillo))
                       ((string=? (armadillo-liveness dillo) "alive")
                        (+ (armadillo-weight dillo) amount))))))
+
+; Ein Papagei hat folgende Eigenschaften:
+; - Satz
+; - Gewicht
+(define-record parrot
+  make-parrot
+  (parrot-sentence string)
+  (parrot-weight kg))
+
+(define parrot1 (make-parrot "Hello!" 1)) ; Papagei mit Begrüßung, 1kg
+(define parrot2 (make-parrot "Tschüssi!" 1.5)) ; Papagei mit Verabschiedung, 1,5kg
+
+; Papagei überfahren
+(: run-over-parrot (parrot -> parrot))
+
+(check-expect (run-over-parrot parrot1)
+              (make-parrot "" 1))
+(check-expect (run-over-parrot parrot2)
+              (make-parrot "" 1.5))
+
+(define run-over-parrot
+  (lambda (parrot)
+    (make-parrot "" (parrot-weight parrot))))
+
+(: x number)
+(define x 1.5)
