@@ -91,3 +91,12 @@ Weight w ...;
     ... ; Konsequente, "then-Zweig"
     ...) ; Alternative, "else-Zweig"
 
+
+; Gürteltier füttern
+(: feed-dillo (armadillo kg -> armadillo))
+
+(check-expect (feed-dillo dillo1 3)
+              (make-dillo "alive" 13))
+(check-expect (feed-dillo dillo2)
+              dillo2)
+
