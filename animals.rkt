@@ -9,7 +9,7 @@
 
 (define kg
   (signature
-   number))
+   natural))
 
 ; Ein Gewicht hat folgende Eigenschaft:
 ; - eine Zahl mit g
@@ -118,7 +118,7 @@ Weight w ...;
   (parrot-weight kg))
 
 (define parrot1 (make-parrot "Hello!" 1)) ; Papagei mit Begrüßung, 1kg
-(define parrot2 (make-parrot "Tschüssi!" 1.5)) ; Papagei mit Verabschiedung, 1,5kg
+(define parrot2 (make-parrot "Tschüssi!" 2)) ; Papagei mit Verabschiedung, 2kg
 
 ; Papagei überfahren
 (: run-over-parrot (parrot -> parrot))
@@ -126,11 +126,22 @@ Weight w ...;
 (check-expect (run-over-parrot parrot1)
               (make-parrot "" 1))
 (check-expect (run-over-parrot parrot2)
-              (make-parrot "" 1.5))
+              (make-parrot "" 2))
 
 (define run-over-parrot
   (lambda (parrot)
     (make-parrot "" (parrot-weight parrot))))
 
-(: x number)
-(define x 1.5)
+; Papagei füttern
+(: feed-parrot (parrot kg -> parrot))
+
+(check-expect (feed-parrot parrot1 3)
+              (make-parrot "Hello!" 4))
+(check-expect (feed-parrot parrot2 1)
+              (make-parrot "Tschüssi!" 3))
+
+(define feed-parrot
+  (lambda (parrot amount)
+    (make-parrot (parrot-sentence parrot)
+                 (+ (parrot-weight parrot) amount))))
+    
