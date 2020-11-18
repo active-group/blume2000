@@ -159,6 +159,7 @@ Weight w ...;
   (signature
    (mixed armadillo parrot)))
 
+
 ; Tier überfahren
 (: run-over-animal (animal -> animal))
 
@@ -170,5 +171,6 @@ Weight w ...;
 (define run-over-animal
   (lambda (animal)
     (cond
-      (... ...)
-      (... ...))))
+      ((armadillo? animal) (run-over-dillo animal))
+      ((parrot? animal) (run-over-parrot animal)))))
+
