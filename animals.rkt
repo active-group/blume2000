@@ -144,4 +144,7 @@ Weight w ...;
   (lambda (parrot amount)
     (make-parrot (parrot-sentence parrot)
                  (+ (parrot-weight parrot) amount))))
-    
+
+; Ein Tier ist eins der folgenden:
+; - Gürteltier
+; - Papagei
