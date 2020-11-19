@@ -89,3 +89,26 @@
        ; gewünscht: (list 1 2 3 4 5 6)
        (cons (first list1)
              (list-append (rest list1) list2))))))
+
+
+(: filter-even ((list-of number) -> (list-of number)))
+
+(check-expect (filter-even (list 1 2 3 4 5 6 7))
+              (list 2 4 6))
+
+(define filter-even
+  (lambda (list0)
+    (filter-even-helper list0 empty)))
+
+; Invariante:
+; result ist Liste mit allen bisher gesehenen geraden Zahlen
+(define filter-even-helper
+  (lambda (list result)
+    (cond
+      ((empty? list) (rev result))
+      ((cons? list)
+       (filter-even-helper (rest list)
+                           (if (even? (first list))
+                               (cons (first list) result)
+                               result))))))
+                        
