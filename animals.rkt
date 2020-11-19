@@ -268,8 +268,8 @@ Weight w ...;
 ; - die leere Liste
 ; - eine Cons-Liste aus erstem Element und Rest-Liste
 ;                                               ^^^^^ Selbstbezug
-(: list-of (signature -> signature))
-(define list-of
+#;(: list-of (signature -> signature))
+#;(define list-of
   (lambda (element)
     (signature
      (mixed empty-list
@@ -282,18 +282,18 @@ Weight w ...;
 
 
 ; Die leere Liste hat keine Eigenschaften
-(define-record empty-list
+#;(define-record empty-list
   make-empty-list
   empty?
   ; keine Felder
   )
 
-(define empty (make-empty-list)) ; "die" leere Liste
+#;(define empty (make-empty-list)) ; "die" leere Liste
 
 ; Eine Cons-Liste besteht aus:
 ; - erstes Element
 ; - Rest-Liste
-(define-record (cons-list-of element) ; implizites Lambda
+#;(define-record (cons-list-of element) ; implizites Lambda
   cons
   cons?
   (first element)
