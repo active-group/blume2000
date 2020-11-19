@@ -32,3 +32,12 @@
            (l3 (list-of string)))
    (expect (append l1 (append l2 l3))
            (append (append l1 l2) l3))))
+
+; "Receive 100GPB on 29 Jan 2021"
+; "Receive 200EUR on 31 Dec 2020"
+; Zero-Coupon Bond / Zero-Bond
+
+; Ein Zero-Coupon Bond hat folgende Eigenschaften:
+; - Ablaufdatum
+; - Betrag
+; - Während
