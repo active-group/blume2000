@@ -40,6 +40,7 @@
 ; - Kontext wird auf Stack verwaltet
 ; - Stack im Platz beschränkt
 ; - richtig blöd, wenn endrekursive Aufrufe Platz verbrauchen
+;   ^^^ JVM
 
 ; linear
 (define rev-helper
