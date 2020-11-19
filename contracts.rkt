@@ -40,4 +40,17 @@
 ; Ein Zero-Coupon Bond hat folgende Eigenschaften:
 ; - Ablaufdatum
 ; - Betrag
-; - Während
+; - Währung
+(define-record zero-coupon-bond
+  make-zero-coupon-bond
+  zero-coupon-bond?
+  (zero-coupon-bond-expiry date)
+  (zero-coupon-bond-amount real)
+  (zero-coupon-bond-currency currency))
+
+(define date (signature string))
+(define currency
+  (signature (enum "GBP" "EUR" "USD")))
+
+(define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
+(define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
