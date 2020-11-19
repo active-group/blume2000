@@ -7,7 +7,7 @@
 (check-expect (rev (list 1 2 3))
               (list 3 2 1))
 
-(define rev
+#;(define rev
   (lambda (list)
     (cond
       ((empty? list) empty)
@@ -22,6 +22,29 @@
 ; Listenlänge n
 ; Laufzeit rev: 1 + 2 + ... + n = (n * (n + 1)) / 2
 ; (n^2 + n) / 2 = O(n^2)
+
+
+; 1 2 3
+; Zwischenergebnis:
+;                         empty
+;                 (cons 1 empty)
+;         (cons 2 (cons 1 empty))
+; (cons 3 (cons 2 (cons 1 empty)))
+
+(define rev
+  (lambda (list)
+    (rev-helper list empty)))
+
+(define rev-helper
+  (lambda (list result) ; result: Zwischenergebnis
+    (cond
+      ((empty? list) result)
+      ((cons? list)
+       (rev-helper (rest list)
+                   (cons (first list)
+                         result))))))
+    
+    
 
 ; Zwei Listen aneinanderhängen
 (: list-append ((list-of %a) (list-of %a) -> (list-of %a)))
