@@ -338,6 +338,15 @@ Weight w ...;
        (* (first list)
           (list-product (rest list)))))))
 
+; Neutrales Element:
+; x + n = n + x = x für alle x
+; x * n = n * x = x für alle x
+; (: + (number number -> number))
+; (: and (boolean boolean -> boolean))
+
+; Liste zusammenfalten
+(: list-fold (%b (%a %b -> %b) (list-of %a) -> %b))
+
 (check-expect (list-fold 0 + (list 1 2 3 4)) 10)
 (check-expect (list-fold 1 * (list 1 2 3 4)) 24)
 
