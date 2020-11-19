@@ -59,7 +59,17 @@
                    (cons (first list)
                          result))))))
     
-    
+#;(define f
+    (lambda (list0)
+      (f-helper list0 ...)))
+
+#;(define f-helper
+    (lambda (list result)
+      (cond
+        ((empty? list) result)
+        ((cons? list)
+         (f-helper (rest list)
+                   ... (first list) ... result)))))
 
 ; Zwei Listen aneinanderhängen
 (: list-append ((list-of %a) (list-of %a) -> (list-of %a)))
