@@ -398,3 +398,70 @@ Weight w ...;
 (define mystery*
   (lambda (a)
     (+ a 1)))
+
+(: filter-even ((list-of integer) -> (list-of integer)))
+
+(define filter-even
+  (lambda (list)
+    (cond
+      ((empty? list) empty)
+      ((cons? list)
+       (if (even? (first list))
+           (cons (first list)
+                 (filter-even (rest list)))
+           (filter-even (rest list)))))))
+ 
+
+(: list-filter
+   ((%element -> boolean) (list-of %element) -> (list-of %element)))
+
+(define non-negative?
+  (lambda (n)
+    (<= 0 n)))
+
+(check-expect (list-filter (lambda (n)
+                             (<= 0 n))
+                           (list -1 0 1))
+              (list 0 1))
+(check-expect (list-filter (call-with-0 <=)
+                           (list -1 0 1))
+              (list 0 1))
+
+(check-expect (list-filter (lambda (n)
+                             (>= 0 n))
+                           (list -1 0 1))
+              (list -1 0))
+(check-expect (list-filter (partial >= 0)
+                           (list -1 0 1))
+              (list -1 0))
+
+(: call-with-0 ((number number -> %result) -> (number -> %result)))
+;               f                    (lambda (n) ...)
+
+(define call-with-0
+  (lambda (f)
+    (lambda (n)
+      (f 0 n))))
+
+(: partial ((%a %b -> %c) %a -> (%b -> %c)))
+
+(define partial
+  (lambda (f m)
+    (lambda (n)
+      (f m n))))
+
+(define xxx
+  (lambda (f)
+    (lambda (m)
+      (lambda (n)
+        (f m n)))))
+
+(define list-filter
+  (lambda (p? list)
+    (cond
+      ((empty? list) empty) 
+      ((cons? list)
+       (if (p? (first list))
+           (cons (first list)
+                 (list-filter p? (rest list)))
+           (list-filter p? (rest list)))))))
