@@ -25,3 +25,10 @@
 ; brauchen:
 ; (: append ((list-of animal) (list-of animal) -> (list-of animal)))
 ; assoziativ, neutrales Element empty
+
+(check-property
+ (for-all ((l1 (list-of string))
+           (l2 (list-of string))
+           (l3 (list-of string)))
+   (expect (append l1 (append l2 l3))
+           (append (append l1 l2) l3))))
