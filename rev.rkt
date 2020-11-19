@@ -25,6 +25,16 @@
 (check-expect (list-append (list 1 2 3) (list 4 5 6))
               (list 1 2 3 4 5 6))
 
+(define list-append
+  (lambda (list1 list2)
+    (cond
+      ((empty? list1) list2)
+      ((cons? list1)
+       ; (first list1) = 1
+       ; (rest list1) = (list 2 3)
+       ; (list-append (rest list1) list2) = (list 2 3 4 5 6)
+       ; gewünscht: (list 1 2 3 4 5 6)
+       (cons (first list1)
+             (list-append (rest list1) list2))))))
 
-
-
+       ...))))
