@@ -27,8 +27,8 @@
 
 (define list-append
   (lambda (list1 list2)
-    (fold list2 cons list1)
-    #;(cond
+    #;(fold list2 cons list1)
+    (cond
       ((empty? list1) list2)
       ((cons? list1)
        ; (first list1) = 1
