@@ -112,3 +112,9 @@
                                (cons (first list) result)
                                result))))))
 
+; Peano
+; Eine natürliche Zahl ist eins der folgenden:
+; - 0
+; - der Nachfolger einer natürlichen Zahl
+
+; z.B. 0', 0'', 0''', 0''''
