@@ -33,8 +33,8 @@
 ; (cons 3 (cons 2 (cons 1 empty)))
 
 (define rev
-  (lambda (list)
-    (rev-helper list empty)))
+  (lambda (list0)
+    (rev-helper list0 empty)))
 
 ; typischerweise:
 ; - Kontext wird auf Stack verwaltet
