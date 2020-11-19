@@ -111,4 +111,4 @@
                            (if (even? (first list))
                                (cons (first list) result)
                                result))))))
-                        
+
