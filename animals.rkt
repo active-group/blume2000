@@ -437,6 +437,9 @@ Weight w ...;
 (check-expect (list-filter ((curry >=) 0)
                            (list -1 0 1))
               (list -1 0))
+(check-expect (list-filter ((curry (drehmich <=)) 0)
+                           (list -1 0 1))
+              (list -1 0))
 
 (: call-with-0 ((number number -> %result) -> (number -> %result)))
 ;               f                    (lambda (n) ...)
@@ -478,11 +481,17 @@ Weight w ...;
 (define greater-or-equal
   (lambda (a b)
     (<= b a)))
-  
+
 (define drehmich
   (lambda (f)
     (lambda (a b)
       (f b a))))
+
+(: drehmich2 ((%a %b -> %c) %a %b -> %c))
+
+(define drehmich2
+  (lambda (f a b)
+    (f b a)))
 
 
 (define list-filter
