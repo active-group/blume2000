@@ -20,3 +20,8 @@
 
 ; Halbgruppe + neutrales Element: Monoid
 
+; Domäne: Highways mit Tieren drauf
+; (list-of animal)
+; brauchen:
+; (: append ((list-of animal) (list-of animal) -> (list-of animal)))
+; assoziativ, neutrales Element empty
