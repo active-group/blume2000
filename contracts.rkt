@@ -54,3 +54,35 @@
 
 (define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
 (define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
+
+; Eine Idee ist eins der folgenden:
+; - mehrere von einem Ding
+; - Währung
+; - Später
+(define contract
+  (signature (mixed one multiple)))
+
+; Eine Einheit einer Währung hat eine Eigenschaft:
+; - Name der Währung ("Identifier")
+(define-record one
+  make-one
+  one?
+  (one-currency currency))
+
+(define eur (make-one "EUR"))
+(define gbp (make-one "GBP"))
+
+; "Mehrere von einem Ding" hat folgende Eigenschaften:
+; - Wieviele
+; - Welches Ding?
+(define-record multiple
+  make-multiple
+  multiple?
+  (multiple-count natural)
+  (multiple-contract contract))
+
+; 100EUR jetzt
+(define c1 (make-multiple 100 (make-one "EUR")))
+
+
+
