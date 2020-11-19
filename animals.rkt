@@ -338,6 +338,27 @@ Weight w ...;
        (* (first list)
           (list-product (rest list)))))))
 
+(check-expect (list-fold 0 + (list 1 2 3 4)) 10)
+(check-expect (list-fold 1 * (list 1 2 3 4)) 24)
+
+(define list-fold
+  (lambda (x f list)
+    (cond
+      ((empty? list) x)
+      ((cons? list)
+       (f (first list)
+          (list-fold x f (rest list)))))))
+
+#;(define f
+    (lambda (list)
+      (cond
+        ((empty? list) ...)
+        ((cons? list)
+         ...
+         (first list)
+         (f (rest list))
+         ...))))
+
 ; Sind alle Zahlen einer Liste gerade?
 (: all-even? (list-of-numbers -> boolean))
 
