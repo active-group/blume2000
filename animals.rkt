@@ -361,7 +361,11 @@ Weight w ...;
 
 ; Haben alle Elemente der Liste eine bestimmte Eigenschaft?
 ; %element: Signaturvariable
+; abstraktere Signatur, aber genauer
 (: all? ((%element -> boolean) (list-of %element) -> boolean))
+
+; vorher:
+;(: all? ((number -> boolean) (list-of number) -> boolean))
 
 ; Higher-Order-Funktion
 
