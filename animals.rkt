@@ -330,6 +330,8 @@ Weight w ...;
        (and (positive? (first list))
             (all-positive? (rest list)))))))
 
+; (: positive? (number -> boolean))
+
 ; Haben alle Elemente der Liste eine bestimmte Eigenschaft?
 (: all? ((number -> boolean) list-of-numbers -> boolean))
 
