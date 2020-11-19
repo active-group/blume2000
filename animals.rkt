@@ -325,6 +325,19 @@ Weight w ...;
        (+ (first list) ; erstes Element
           (list-sum (rest list))))))) ; Summe der restlichen Elemente
 
+; Produkt der Listenelemente berechnen
+(: list-product ((list-of number) -> number))
+
+(check-expect (list-product (list 2 3 4 5)) 120)
+
+(define list-product
+  (lambda (list)
+    (cond
+      ((empty? list) 1)
+      ((cons? list)
+       (* (first list)
+          (list-product (rest list)))))))
+
 ; Sind alle Zahlen einer Liste gerade?
 (: all-even? (list-of-numbers -> boolean))
 
