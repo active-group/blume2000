@@ -69,6 +69,16 @@ Weight w ...;
 (define dillo1 (make-armadillo "alive" 10)) ; Gürteltier, lebendig, 10kg
 (define dillo2 (make-armadillo "dead" 8)); Gürteltier, tot, 8kg
 
+; Gürteltier am Leben?
+(: armadillo-alive? (armadillo -> boolean))
+
+(check-expect (armadillo-alive? dillo1) #t)
+(check-expect (armadillo-alive? dillo2) #f)
+
+(define armadillo-alive?
+  (lambda (dillo)
+    (string=? (armadillo-liveness dillo) "alive")))
+
 ; Gürteltier überfahren
 ; Java: class Armadillo { void runOver() { this.liveness = Dead } }
 (: run-over-dillo (armadillo -> armadillo))
