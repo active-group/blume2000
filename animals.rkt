@@ -450,7 +450,13 @@ Weight w ...;
     (lambda (n)
       (f m n))))
 
-(define xxx
+; Funktion currifizieren
+; alternativ: Funktion schönfinkeln
+
+(: curry ((%a     %b -> %c) ->
+          (%a -> (%b -> %c))))
+
+(define curry
   (lambda (f)
     (lambda (m)
       (lambda (n)
