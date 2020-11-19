@@ -44,6 +44,10 @@
 
 ; linear
 (define rev-helper
+  ; Schleifeninvariante:
+  ; result ist die Liste der Elemente zwischen list0 und list
+  ; (die Elemente, die "wir bisher gesehen haben")
+  ; in umgekehrter Reihenfolge
   (lambda (list result) ; result: Zwischenergebnis
     (cond
       ((empty? list) result)
