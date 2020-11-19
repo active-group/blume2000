@@ -16,8 +16,9 @@
        ; (first list) = 1
        ; (rest list) = (list 2 3)
        ; (rev (rest list)) = (list 3 2)
-       (append (rev (rest list))
-               (cons (first list) empty))))))
+       (append ; Kontext
+        (rev (rest list))
+        (cons (first list) empty))))))
 
 ; Listenlänge n
 ; Laufzeit rev: 1 + 2 + ... + n = (n * (n + 1)) / 2
@@ -35,6 +36,7 @@
   (lambda (list)
     (rev-helper list empty)))
 
+; linear
 (define rev-helper
   (lambda (list result) ; result: Zwischenergebnis
     (cond
