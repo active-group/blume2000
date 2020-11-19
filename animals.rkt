@@ -375,6 +375,11 @@ Weight w ...;
        (and (even? (first list))
             (all-even? (rest list)))))))
 
+(check-expect (all-even?2 (cons 2 (cons 4 (cons 6 empty))))
+              #t)
+(check-expect (all-even?2 (cons 2 (cons 3 (cons 8 empty))))
+              #f)
+
 (define all-even?2
   (lambda (list0)
     (list-fold #t
