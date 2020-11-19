@@ -375,6 +375,14 @@ Weight w ...;
        (and (even? (first list))
             (all-even? (rest list)))))))
 
+(define all-even?2
+  (lambda (list0)
+    (list-fold #t
+               (lambda (first-list rec-result)
+                 (and (even? first-list)
+                      rec-result))
+               list0)))
+
 ; Sind alle Zahlen einer Liste positiv?
 (: all-positive? (list-of-numbers -> boolean))
 
