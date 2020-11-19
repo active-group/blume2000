@@ -1,6 +1,6 @@
 ;; Die ersten drei Zeilen dieser Datei wurden von DrRacket eingefügt. Sie enthalten Metadaten
 ;; über die Sprachebene dieser Datei in einer Form, die DrRacket verarbeiten kann.
-#reader(lib "beginner-reader.rkt" "deinprogramm" "sdp")((modname animals) (read-case-sensitive #f) (teachpacks ()) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ())))
+#reader(lib "vanilla-reader.rkt" "deinprogramm" "sdp")((modname animals) (read-case-sensitive #f) (teachpacks ()) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ())))
 ; Lebendigkeit ist eins der folgenden:
 ; - tot
 ; - lebendig
@@ -387,5 +387,14 @@ Weight w ...;
        (and (p? (first list))
             (all? p? (rest list)))))))
 
+(: mystery (%x -> %x))
 
- 
+(define mystery
+  (lambda (a) ; (: a %x)
+    a))
+
+(: mystery* (number -> number))
+
+(define mystery*
+  (lambda (a)
+    (+ a 1)))
