@@ -468,6 +468,18 @@ Weight w ...;
       (lambda (n)
         (f m n)))))
 
+(: uncurry ((%a -> (%b -> %c)) ->
+            (%a     %b -> %c)))
+
+(check-expect ((uncurry (curry +)) 3 4) 7)
+
+(define uncurry
+  (lambda (f)
+    (lambda (a b)
+      ((f a) b))))
+
+  
+
 ; Argumente vertauschen
 (: drehmich ((%a %b -> %c) ->
              (%b %a -> %c)))
