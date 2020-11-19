@@ -36,6 +36,11 @@
   (lambda (list)
     (rev-helper list empty)))
 
+; typischerweise:
+; - Kontext wird auf Stack verwaltet
+; - Stack im Platz beschränkt
+; - richtig blöd, wenn endrekursive Aufrufe Platz verbrauchen
+
 ; linear
 (define rev-helper
   (lambda (list result) ; result: Zwischenergebnis
