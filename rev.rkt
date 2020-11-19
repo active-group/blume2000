@@ -42,6 +42,9 @@
     (cond
       ((empty? list) result)
       ((cons? list)
+       ; kein Kontext
+       ; endrekursiver Aufruf
+       ; tail call
        (rev-helper (rest list)
                    (cons (first list)
                          result))))))
