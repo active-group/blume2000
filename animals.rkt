@@ -420,7 +420,7 @@ Weight w ...;
     (<= 0 n)))
 
 (check-expect (list-filter (lambda (n)
-                             (<= 0 n))
+                             (>= n 0))
                            (list -1 0 1))
               (list 0 1))
 (check-expect (list-filter (call-with-0 <=)
@@ -432,6 +432,9 @@ Weight w ...;
                            (list -1 0 1))
               (list -1 0))
 (check-expect (list-filter (partial >= 0)
+                           (list -1 0 1))
+              (list -1 0))
+(check-expect (list-filter ((curry >=) 0)
                            (list -1 0 1))
               (list -1 0))
 
@@ -461,6 +464,26 @@ Weight w ...;
     (lambda (m)
       (lambda (n)
         (f m n)))))
+
+; Argumente vertauschen
+(: drehmich ((%a %b -> %c) ->
+             (%b %a -> %c)))
+
+(check-expect ((drehmich -) 12 7) -5)
+
+(define less-or-equal
+  (lambda (a b)
+    (>= b a)))
+
+(define greater-or-equal
+  (lambda (a b)
+    (<= b a)))
+  
+(define drehmich
+  (lambda (f)
+    (lambda (a b)
+      (f b a))))
+
 
 (define list-filter
   (lambda (p? list)
