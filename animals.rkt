@@ -268,11 +268,19 @@ Weight w ...;
 ; - die leere Liste
 ; - eine Cons-Liste aus erstem Element und Rest-Liste
 ;                                               ^^^^^ Selbstbezug
-(define list-of-numbers
+(: list-of (signature -> signature))
+(define list-of
+  (lambda (element)
+    (signature
+     (mixed empty-list
+            (cons-list-of element)))))
+
+#;(define list-of-numbers
   (signature
    (mixed empty-list
           cons-list)))
-  
+
+
 ; Die leere Liste hat keine Eigenschaften
 (define-record empty-list
   make-empty-list
@@ -285,18 +293,27 @@ Weight w ...;
 ; Eine Cons-Liste besteht aus:
 ; - erstes Element
 ; - Rest-Liste
-(define-record cons-list
+(define-record (cons-list-of element) ; implizites Lambda
+  cons
+  cons?
+  (first element)
+  (rest (list-of element)))
+
+; alte Version
+#;(define-record cons-list
   cons
   cons?
   (first number)
   (rest list-of-numbers))
+
+(define list-of-numbers (signature (list-of number)))
 
 (define l1 (cons 17 empty)) ; 1elementige Liste: 17
 (define l2 (cons 3 (cons 17 empty))) ; 2elementige Liste: 3 17
 (define l3 (cons 5 l2)) ; 3elementige Liste: 5 3 17
 
 ; Summe der Listenelemente berechnen
-(: list-sum (list-of-numbers -> number))
+(: list-sum ((list-of number) -> number))
 
 (check-expect (list-sum l3) 25)
 
@@ -343,7 +360,8 @@ Weight w ...;
 ; (: positive? (number -> boolean))
 
 ; Haben alle Elemente der Liste eine bestimmte Eigenschaft?
-(: all? ((number -> boolean) list-of-numbers -> boolean))
+; %element: Signaturvariable
+(: all? ((%element -> boolean) (list-of %element) -> boolean))
 
 ; Higher-Order-Funktion
 
