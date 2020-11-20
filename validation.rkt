@@ -225,8 +225,9 @@ class Success<R> extends Validation<?, R> { ... }
                               (success-result v2)))))))))
 
 
+; applikativer Funktor
 ; <*>
-; (: validation-applicate ((validation %d (%a -> %b)) (validation %d %a) -> (validation %d b)))
+;(: validation-applicate ((validation %d (%a -> %b)) (validation %d %a) -> (validation %d b)))
 
 
 
