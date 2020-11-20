@@ -140,6 +140,9 @@
   give?
   (give-contract contract))
 
+; Ein Kombi-Vertrag besteht aus:
+; - Vertrag
+; - noch'n Vertrag
 (define-record both
   make-both
   both?
