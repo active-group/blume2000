@@ -231,15 +231,22 @@
   (payment-currency currency)
   (payment-direction direction))
 
-; Bedeutung des Vertrags: Zahlungsströme
-(: meaning (contract date -> (list-of payment)))
+(define-record result
+  make-result
+  result?
+  (result-payments (list-of payment))
+  (result-contract contract))
+
+; Bedeutung des Vertrags: Zahlungsströme bis now
+(: meaning (contract date -> result))
 
 (define meaning
   (lambda (contract now)
     (cond
       ((zero? contract) ...)
       ((one? contract)
-       (list (make-payment now 1 (one-currency contract) "long")))
+       (make-result (list (make-payment now 1 (one-currency contract) "long"))
+                    (make-zero)))
       ((multiple? contract) ...)
       ((later? contract) ...)
       ((both? contract) ...)
