@@ -3,6 +3,18 @@
 #reader(lib "vanilla-reader.rkt" "deinprogramm" "sdp")((modname contracts) (read-case-sensitive #f) (teachpacks ()) (deinprogramm-settings #(#f write repeating-decimal #f #t none explicit #f ())))
 ; Financial contracts / Finanzderivate
 
+; Algebra
+; Menge(n) + Operationen + Gleichungen für Operationen
+
+; Menge: natürliche Zahlen
+; Operation: +
+; Assoziativgesetz
+; => Die natürlichen Zahlen mit der Addition bilden eine Halbgruppe.
+
+; Halbgruppe, bei der auch ein neutrales Element vorhanden ist
+; => Die natürlichen Zahlen mit der Addition bilden einen Monoid,
+; bei dem 0 das neutrale Element ist.
+
 ; Voraussetzung:
 ; Menge/Typ/Signatur T
 ; Operation
