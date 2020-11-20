@@ -94,10 +94,20 @@
   (signature
    (enum "too-young" "too-old")))
 
-(: validate-age (natural -> (validation age-error-description natural)))
+; Ein Alter hat folgende Eigenschaft:
+; - Anzahl von Jahren
+(define-record age
+  make-age ; geheim
+  age?
+  (age-years natural))
+
+; Alter validieren
+; - keine Exceptions
+; - nicht einfach Boolean
+(: validate-age (natural -> (validation age-error-description age)))
 
 (check-expect (validate-age 14) (make-failure (list "too-young")))
-(check-expect (validate-age 30) (make-success 30))
+(check-expect (validate-age 30) (make-success (make-age 30)))
 (check-expect (validate-age 140) (make-failure (list "too-old")))
 
 (define validate-age
@@ -105,9 +115,10 @@
     (cond
       ((< n 18) (make-failure (list "too-young")))
       ((> n 130) (make-failure (list "too-old")))
-      (else (make-succes n)))))
+      (else (make-succes (make-age n))))))
 
 
+; (: validate-name (string -> (validation 
 
 
 
