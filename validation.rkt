@@ -87,8 +87,9 @@
 ; - Erfolg
 (define validation
   (lambda (description result)
-    (mixed (failure-of description)
-           (success-of result))))
+    (signature
+     (mixed (failure-of description)
+            (success-of result)))))
 
 (define age-error-description
   (signature
@@ -103,7 +104,7 @@
 
 ; Alter validieren
 ; - keine Exceptions
-; - nicht einfach Boolean
+; - nicht einfach Boolean, sondern sinnvolles Ergebnis
 (: validate-age (natural -> (validation age-error-description age)))
 
 (check-expect (validate-age 14) (make-failure (list "too-young")))
@@ -115,10 +116,30 @@
     (cond
       ((< n 18) (make-failure (list "too-young")))
       ((> n 130) (make-failure (list "too-old")))
-      (else (make-succes (make-age n))))))
+      (else (make-success (make-age n))))))
+
+; Name hat folgende Eigenschaft:
+; - Text des Namens
+(define-record name
+  make-name
+  name?
+  (name-text string))
+
+(define name-error-description
+  (signature
+   (enum "Nazi" "Cartoon")))
+
+; Name validieren
+(: validate-name (string -> (validation name-error-description name)))
+
+(define validate-name
+  (lambda (text)
+    (cond
+      ((string=? "Hitler" text) (make-failure (list "Nazi")))
+      ((string=? "Micky Maus" text) (make-failure (list "Cartoon")))
+      (else (make-success (make-name text))))))
 
 
-; (: validate-name (string -> (validation 
 
 
 
