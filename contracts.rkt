@@ -89,7 +89,7 @@
 ; - Später
 ; - Richtung ändern
 (define contract
-  (signature (mixed one multiple later give)))
+  (signature (mixed one multiple later give both)))
 
 
 ; Eine Einheit einer Währung hat eine Eigenschaft:
@@ -172,3 +172,31 @@
 ; (make-give (make-give c)) = c
 ; (make-give (make-multiple n c)) =
 ;   (make-multiple n (make-give c))
+
+
+(define-record both
+  make-both
+  both?
+  (both-contract-1 contract)
+  (both-contract-2 contract))
+
+(define c4 (make-both zcb1* zcb2))
+
+; 2 Verträge kombinieren
+#;(: make-both (contract contract -> contract))
+
+#;(define make-both
+  (lambda (contract1 contract2)
+    (cond
+      ((one? contract1) ...)
+      ((multiple? contract1) ...)
+      ((later? contract1) ...)
+       (cond
+         ((one? contract2)
+          (if (string=? (one-currency contract1)
+                        (one-currency contract2))
+              (make-multiple 2 contract1)
+              ???))
+         ((multiple? contract2) ...)
+         ((later? contract2)
+          ...)))))
