@@ -58,15 +58,12 @@
 ; - Ablaufdatum
 ; - Betrag
 ; - Währung
-(define-record zero-coupon-bond
+#;(define-record zero-coupon-bond
   make-zero-coupon-bond
   zero-coupon-bond?
   (zero-coupon-bond-expiry date)
   (zero-coupon-bond-amount real)
   (zero-coupon-bond-currency currency))
-
-(define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
-(define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
 
 #;(define contract
     (signature
@@ -86,13 +83,14 @@
 ; - Was für Zahlungen?
 ; - Wie verhält sich der Vertrag unter Marktszenarien?
 ; - ...
-
 ; Eine Idee ist eins der folgenden:
 ; - mehrere von einem Ding
 ; - Währung
 ; - Später
+; - Richtung ändern
 (define contract
-  (signature (mixed one multiple)))
+  (signature (mixed one multiple later give)))
+
 
 ; Eine Einheit einer Währung hat eine Eigenschaft:
 ; - Name der Währung ("Identifier")
@@ -101,11 +99,6 @@
   one?
   (one-currency currency))
 
-; Ich bekomme 1EUR jetzt
-(define eur (make-one "EUR"))
-; Ich bekomme 1GBP jetzt
-(define gbp (make-one "GBP"))
-
 ; "Mehrere von einem Ding" hat folgende Eigenschaften:
 ; - Wieviele
 ; - Welches Ding?
@@ -113,10 +106,58 @@
   make-multiple
   multiple?
   (multiple-count natural)
+  #;(multiple-thing thing) ; thing entält Währung
   (multiple-contract contract))
 
-; 100EUR jetzt
+; "Später" hat folgende Eigenschaften:
+; - Wann?
+; - Was?
+(define-record later
+  make-later
+  later?
+  (later-date date)
+  (later-contract contract))
+
+
+; "Richtung" ist eins der folgenden:
+; - long
+; - short
+(define direction
+  (signature (enum "long" "short")))
+
+
+(define-record one-direction
+  make-one-direction
+  one-direction?
+  (one-direction-direction direction)
+  ; 1. Idee
+  ;(one-direction-currency currency)
+  (one-direction-contract contract)
+  )
+
+(define-record give
+  make-give
+  give?
+  (give-contract contract))
+
+; Zero-Coupon-Bond konstruieren
+(: make-zero-coupon-bond (date natural currency -> contract))
+
+(define make-zero-coupon-bond
+  (lambda (date count currency)
+    (make-later date (make-multiple count (make-one currency)))))
+
+; Ich bekomme 1EUR jetzt
+(define eur (make-one "EUR"))
+; Ich bekomme 1GBP jetzt
+(define gbp (make-one "GBP"))
+
+; Ich bekomme 100EUR jetzt
 (define c1 (make-multiple 100 (make-one "EUR")))
 
+; Ich bekomme am 31.12.2020 100EUR
+(define c2 (make-later "2020-12-31" c1))
 
+(define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
+(define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
 
