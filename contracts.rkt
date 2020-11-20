@@ -154,6 +154,10 @@
   make-zero
   zero?)
 
+; (make-both (make-zero) c) = c
+; (make-both c (make-zero)) = c
+; (make-both (make-later "2020-12-31" (make-zero))
+;            (make-later "2021-12-31" c))
 
 ; Zero-Coupon-Bond konstruieren
 (: make-zero-coupon-bond (date natural currency -> contract))
