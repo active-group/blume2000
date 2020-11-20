@@ -17,6 +17,8 @@
 
 ; Halbgruppe -> Monoid -> Gruppe -> Ring -> Körper
 
+; Programmierung: "Typ" statt "Menge"
+
 ; Voraussetzung:
 ; Menge/Typ/Signatur T
 ; Operation
