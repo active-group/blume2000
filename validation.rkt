@@ -91,6 +91,19 @@
      (mixed (failure-of description)
             (success-of result)))))
 
+; Funktor für validation
+(: validation-map ((%a -> %b) (validation %description %a) -> (validation %description %b)))
+
+
+
+#|
+interface Validation<D, R> { ... }
+
+class Failure<D> extends Validation<D, ?> { ... }
+
+class Success<R> extends Validation<?, R> { ... }
+|#
+
 (define age-error-description
   (signature
    (enum "too-young" "too-old")))
