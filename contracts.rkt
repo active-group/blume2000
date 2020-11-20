@@ -89,7 +89,7 @@
 ; - Später
 ; - Richtung ändern
 (define contract
-  (signature (mixed one multiple later give both)))
+  (signature (mixed one multiple later give both zero)))
 
 
 ; Eine Einheit einer Währung hat eine Eigenschaft:
