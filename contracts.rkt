@@ -65,6 +65,9 @@
   (zero-coupon-bond-amount real)
   (zero-coupon-bond-currency currency))
 
+(define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
+(define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
+
 #;(define contract
     (signature
      (mixed zero-coupon-bond
@@ -74,18 +77,15 @@
             annapurna
             ...)))
 
+(define date (signature string))
+(define currency
+  (signature (enum "GBP" "EUR" "USD")))
+
 ; Fragen:
 ; - Wieviel ist ein Vertrag wert?
 ; - Was für Zahlungen?
 ; - Wie verhält sich der Vertrag unter Marktszenarien?
 ; - ...
-
-(define date (signature string))
-(define currency
-  (signature (enum "GBP" "EUR" "USD")))
-
-(define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
-(define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
 
 ; Eine Idee ist eins der folgenden:
 ; - mehrere von einem Ding
@@ -101,7 +101,9 @@
   one?
   (one-currency currency))
 
+; Ich bekomme 1EUR jetzt
 (define eur (make-one "EUR"))
+; Ich bekomme 1GBP jetzt
 (define gbp (make-one "GBP"))
 
 ; "Mehrere von einem Ding" hat folgende Eigenschaften:
