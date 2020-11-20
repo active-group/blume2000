@@ -150,7 +150,7 @@
   (both-contract-2 contract))
 
 ; Neutrales Element
-(define zero
+(define-record zero
   make-zero
   zero?)
 
