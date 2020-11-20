@@ -65,6 +65,21 @@
   (zero-coupon-bond-amount real)
   (zero-coupon-bond-currency currency))
 
+#;(define contract
+    (signature
+     (mixed zero-coupon-bond
+            call
+            put
+            himalaya
+            annapurna
+            ...)))
+
+; Fragen:
+; - Wieviel ist ein Vertrag wert?
+; - Was für Zahlungen?
+; - Wie verhält sich der Vertrag unter Marktszenarien?
+; - ...
+
 (define date (signature string))
 (define currency
   (signature (enum "GBP" "EUR" "USD")))
