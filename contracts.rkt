@@ -149,6 +149,12 @@
   (both-contract-1 contract)
   (both-contract-2 contract))
 
+; Neutrales Element
+(define zero
+  make-zero
+  zero?)
+
+
 ; Zero-Coupon-Bond konstruieren
 (: make-zero-coupon-bond (date natural currency -> contract))
 
