@@ -218,3 +218,29 @@
          ((multiple? contract2) ...)
          ((later? contract2)
           ...)))))
+
+; Eine Zahlung hat folgende Eigenschaften:
+; - Datum
+; - Betrag
+; - Währung
+; - Richtung
+(define-record payment
+  make-payment
+  (payment-date date)
+  (payment-count natural)
+  (payment-currency currency)
+  (payment-direction direction))
+
+; Bedeutung des Vertrags: Zahlungsströme
+(: meaning (contract date -> (list-of payment)))
+
+(define meaning
+  (lambda (contract now)
+    (cond
+      ((zero? contract) ...)
+      ((one? contract)
+       (list (make-payment now 1 (one-currency contract) "long")))
+      ((multiple? contract) ...)
+      ((later? contract) ...)
+      ((both? contract) ...)
+      ((give? contract) ...))))
