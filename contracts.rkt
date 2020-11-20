@@ -10,6 +10,7 @@
 ; Operation: +
 ; Assoziativgesetz
 ; => Die natürlichen Zahlen mit der Addition bilden eine Halbgruppe.
+; => Die natürlichen Zahlen mit der Multiplikation bilden eine Halbgruppe.
 
 ; Halbgruppe, bei der auch ein neutrales Element vorhanden ist
 ; => Die natürlichen Zahlen mit der Addition bilden einen Monoid,
