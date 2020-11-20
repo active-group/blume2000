@@ -140,6 +140,12 @@
   give?
   (give-contract contract))
 
+(define-record both
+  make-both
+  both?
+  (both-contract-1 contract)
+  (both-contract-2 contract))
+
 ; Zero-Coupon-Bond konstruieren
 (: make-zero-coupon-bond (date natural currency -> contract))
 
@@ -173,12 +179,6 @@
 ; (make-give (make-multiple n c)) =
 ;   (make-multiple n (make-give c))
 
-
-(define-record both
-  make-both
-  both?
-  (both-contract-1 contract)
-  (both-contract-2 contract))
 
 (define c4 (make-both zcb1* zcb2))
 
