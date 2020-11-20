@@ -94,6 +94,16 @@
 ; Funktor für validation
 (: validation-map ((%a -> %b) (validation %description %a) -> (validation %description %b)))
 
+(define validation-map
+  (lambda (f validation)
+    (cond
+      ((success? validation)
+       (make-success
+        (f
+         (success-result validation))))
+      ((failure? validation)
+       (make-failure
+        (failure-descriptions validation))))))
 
 
 #|
@@ -134,7 +144,7 @@ class Success<R> extends Validation<?, R> { ... }
 ; Name hat folgende Eigenschaft:
 ; - Text des Namens
 (define-record name
-  make-name
+  make-name ; geheim
   name?
   (name-text string))
 
@@ -153,8 +163,70 @@ class Success<R> extends Validation<?, R> { ... }
       (else (make-success (make-name text))))))
 
 
+; Person hat folgende Eigenschaften:
+; - Name
+; - Alter
+(define-record person
+  make-person
+  person?
+  (person-name name)
+  (person-age age))
+
+; Person validierend erzeugen
+(: validate-person (string natural -> (validation
+                                       (mixed age-error-description
+                                                         name-error-description)
+                                       person)))
+
+(check-expect (validate-person "Mike" 49)
+              (make-success (make-person (make-name "Mike") (make-age 49))))
+(check-expect (validate-person "Hitler" 140)
+              (make-failure (list "Nazi" "too-old")))
+
+(define validate-person
+  (lambda (text years)
+    (validate* make-person
+               (validate-name text)
+               (validate-age years))))
+
+(define validate-person*
+  (lambda (vname vage)
+    (cond
+      ((failure? vname)
+       (cond
+         ((failure? vage)
+          (make-failure (append (failure-descriptions vname)
+                                (failure-descriptions vage))))
+         ((success? vage) vname)))
+      ((success? vname)
+       (cond
+         ((failure? vage) vage)
+         ((success? vage)
+          (make-success (make-person (success-result vname)
+                                     (success-result vage)))))))))
+
+(: validate* ((%a %b -> %c) (validation %d %a) (validation %d %b)
+                               -> (validation %d %c)))
+
+(define validate*
+  (lambda (make v1 v2)
+    (cond
+      ((failure? v1)
+       (cond
+         ((failure? v2)
+          (make-failure (append (failure-descriptions v1)
+                                (failure-descriptions v2))))
+         ((success? v2) v1)))
+      ((success? v1)
+       (cond
+         ((failure? v2) v2)
+         ((success? v2)
+          (make-success (make (success-result v1)
+                              (success-result v2)))))))))
 
 
+; <*>
+; (: validation-applicate ((validation %d (%a -> %b)) (validation %d %a) -> (validation %d b)))
 
 
 
