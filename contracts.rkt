@@ -152,6 +152,10 @@
 ; Ich bekomme 1GBP jetzt
 (define gbp (make-one "GBP"))
 
+; Ich bezahle 1GBP jetzt
+(define gpb* (make-give gbp))
+
+
 ; Ich bekomme 100EUR jetzt
 (define c1 (make-multiple 100 (make-one "EUR")))
 
@@ -161,3 +165,8 @@
 (define zcb1 (make-zero-coupon-bond "2021-01-29" 100 "GBP"))
 (define zcb2 (make-zero-coupon-bond "2020-12-31" 200 "EUR"))
 
+; Ich bezahle am 29.1.2021 100 GBP
+(define zcb1* (make-give zcb1))
+; Ich bekomme am 29.1.2021 100 GBP
+(define zcb1** (make-give zcb1*))
+; (make-give (make-give c)) = c
