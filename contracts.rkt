@@ -245,7 +245,7 @@
 (define meaning
   (lambda (contract now)
     (cond
-      ((zero? contract) ...)
+      ((zero-contract? contract) ...)
       ((one? contract)
        (make-result (list (make-payment now 1 (one-currency contract) "long"))
                     (make-zero)))
