@@ -144,10 +144,32 @@
 ; - Vertrag
 ; - noch'n Vertrag
 (define-record both
-  make-both
+  really-make-both
   both?
   (both-contract-1 contract)
   (both-contract-2 contract))
+
+; Optimierende Version von make-both
+; smart constructor
+(: make-both (contract contract -> contract))
+
+(check-expect (make-both (make-zero) (make-one "EUR"))
+              (make-one "EUR"))
+(check-expect (make-both (make-one "EUR") (make-zero))
+              (make-one "EUR"))
+(check-expect (make-both (make-zero) (make-zero))
+              (make-zero))
+(check-expect (make-both (make-one "EUR") (make-one "GBP"))
+              (make-both (make-one "EUR") (make-one "GBP")))
+
+(define make-both
+  (lambda (contract-1 contract-2)
+    (cond
+      ((zero-contract? contract-1) contract-2)
+      ((zero-contract? contract-2) contract-1)
+      (else
+       (really-make-both contract-1 contract-2)))))
+
 
 ; Neutrales Element
 (define-record zero
@@ -315,3 +337,7 @@
        (define r (meaning (give-contract contract) now))
        (make-result (map flip-payment (result-payments r))
                     (make-give (result-contract r)))))))
+
+
+(define c6 (make-both (make-later "2020-12-31" (make-one "EUR"))
+                      (make-later "2021-12-31" (make-one "GBP"))))
