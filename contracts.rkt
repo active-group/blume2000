@@ -182,6 +182,11 @@
 
 (define c4 (make-both zcb1* zcb2))
 
+; (make-later "2020-12-31"
+;   (make-later "2021-12-31" c))
+; (make-later "2021-12-31"
+;   (make-later "2020-12-31" c))
+
 ; 2 Verträge kombinieren
 #;(: make-both (contract contract -> contract))
 
