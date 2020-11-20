@@ -152,7 +152,7 @@
 ; Neutrales Element
 (define-record zero
   make-zero
-  zero?)
+  zero-contract?)
 
 ; (make-both (make-zero) c) = c
 ; (make-both c (make-zero)) = c
