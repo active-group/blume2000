@@ -237,6 +237,8 @@
   (result-payments (list-of payment))
   (result-contract contract))
 
+(define date<=? string<=?)
+
 ; Bedeutung des Vertrags: Zahlungsströme bis now
 (: meaning (contract date -> result))
 
