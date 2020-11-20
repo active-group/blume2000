@@ -170,3 +170,5 @@
 ; Ich bekomme am 29.1.2021 100 GBP
 (define zcb1** (make-give zcb1*))
 ; (make-give (make-give c)) = c
+; (make-give (make-multiple n c)) =
+;   (make-multiple n (make-give c))
