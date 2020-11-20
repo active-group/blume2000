@@ -15,6 +15,8 @@
 ; => Die natürlichen Zahlen mit der Addition bilden einen Monoid,
 ; bei dem 0 das neutrale Element ist.
 
+; Halbgruppe -> Monoid -> Gruppe -> Ring -> Körper
+
 ; Voraussetzung:
 ; Menge/Typ/Signatur T
 ; Operation
