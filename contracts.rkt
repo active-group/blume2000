@@ -231,11 +231,53 @@
   (payment-currency currency)
   (payment-direction direction))
 
+; Zahlung hochskalieren
+(: scale-payment (natural payment -> payment))
+
+(check-expect (scale-payment 7 (make-payment "2020-01-01" 5 "EUR" "long"))
+              (make-payment "2020-01-01" 35 "EUR" "long"))
+
+(define scale-payment
+  (lambda (factor payment)
+    (make-payment (payment-date payment)
+                  (* factor (payment-count payment))
+                  (payment-currency payment)
+                  (payment-direction payment))))
+
+; Zahlung umdrehen
+(: flip-payment (payment -> payment))
+
+(check-expect (flip-payment (make-payment "2020-01-01" 5 "EUR" "long"))
+              (make-payment "2020-01-01" 5 "EUR" "short"))
+(check-expect (flip-payment (make-payment "2020-01-01" 5 "EUR" "short"))
+              (make-payment "2020-01-01" 5 "EUR" "long"))
+
+(define flip-payment
+  (lambda (payment)
+    (make-payment (payment-date payment)
+                  (payment-count payment)
+                  (payment-currency payment)
+                  (if (string=? (payment-direction payment) "long")
+                      "short"
+                      "long"))))
+
 (define-record result
   make-result
   result?
   (result-payments (list-of payment))
   (result-contract contract))
+
+; Funktion currifizieren
+; alternativ: Funktion schönfinkeln
+
+(: curry ((%a     %b -> %c) ->
+          (%a -> (%b -> %c))))
+
+(define curry
+  (lambda (f)
+    (lambda (m)
+      (lambda (n)
+        (f m n)))))
 
 (define date<=? string<=?)
 
@@ -245,11 +287,31 @@
 (define meaning
   (lambda (contract now)
     (cond
-      ((zero-contract? contract) ...)
+      ((zero-contract? contract)
+       (make-result empty
+                    (make-zero)))
       ((one? contract)
        (make-result (list (make-payment now 1 (one-currency contract) "long"))
                     (make-zero)))
-      ((multiple? contract) ...)
-      ((later? contract) ...)
-      ((both? contract) ...)
-      ((give? contract) ...))))
+      ((multiple? contract)
+       (define r (meaning (multiple-contract contract) now)) ; result
+       ; (: map ((%a -> %b) (list-of %a) -> (list-of %b)))
+       ; (result-payments r) ; dadrauf scale-payment
+       (make-result (map ((curry scale-payment) (multiple-count contract))
+                         (result-payments r)) ; payments
+                    (make-multiple (multiple-count contract)
+                                   (result-contract r)))) ; contract
+      ((later? contract)
+       (if (date<=? (later-date contract) now)
+           (meaning (later-contract contract) now)
+           (make-result empty
+                        contract)))
+      ((both? contract)
+       (define r1 (meaning (both-contract-1 contract) now))
+       (define r2 (meaning (both-contract-2 contract) now))
+       (make-result (append (result-payments r1) (result-payments r2))
+                    (make-both (result-contract r1) (result-contract r2)))
+      ((give? contract)
+       (define r (meaning (give-contract contract) now))
+       (make-result (map flip-payment (result-payments r))
+                    (make-give (result-contract r))))))))
