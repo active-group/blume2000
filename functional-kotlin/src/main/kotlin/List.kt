@@ -8,9 +8,7 @@
 //                                                       ^^^^^
 // gemischte Daten
 // Kotlin: ein Interface obendrüber, Unterklassen
-sealed interface List<out A> {
-    fun sum(): Int
-}
+sealed interface List<in A>
 
 // Angenommen A < B
 // Wie ist die Beziehung zwischen List<A> und List<B>?
