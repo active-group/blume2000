@@ -47,6 +47,9 @@ fun <A, B> fold(e: B, f: (A, B) -> B, list: List<A>): B =
             f(list.first, fold(e, f, list.rest))
     }
 
+fun listSum2(list: List<Int>): Int =
+    fold(0, { a, b ->  a + b}, list)
+
 tailrec fun listSum1(list: List<Int>, acc: Int = 0): Int =
     when (list) {
         is Empty -> acc
