@@ -20,6 +20,7 @@
 // FP: Lambda!
 // NodeJS: Callback, FP: Continuation
 
+// Datenbank-Programm, das ein Ergebnis vom Typ A liefert
 sealed interface DB<out A>
 data class Get<out A>(val key: String, val cont: (Int) -> DB<A>): DB<A>
 data class Put<out A>(val key: String, val value: Int, val cont: (Unit) -> DB<A>): DB<A>
@@ -34,3 +35,4 @@ val p1 = Put("Mike", 50) {
          }
              }}
 
+fun <A> runDB(db: DB<A>, storage: Map<String, Int>): A = TODO()
