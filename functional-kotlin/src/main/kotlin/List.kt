@@ -25,12 +25,26 @@ data class Cons<out A>(val first: A, val rest: List<A>) : List<A>
 
 // Summe aller Listenelemente
 // wir brauchen: List<Nothing> < List<Int> für Empty
-tailrec fun listSum(list: List<Int>): Int =
+fun listSum(list: List<Int>): Int =
     when (list) {
         is Empty -> 0
         is Cons ->
             // list.first + []: Kontext des Aufrufs von listSum
             list.first + listSum(list.rest)
+    }
+
+fun listProduct(list: List<Int>): Int =
+    when (list) {
+        is Empty -> 1
+        is Cons ->
+            list.first * listProduct(list.rest)
+    }
+
+fun <A, B> fold(e: B, f: (A, B) -> B, list: List<A>): B =
+    when (list) {
+        is Empty -> e
+        is Cons ->
+            f(list.first, fold(e, f, list.rest))
     }
 
 tailrec fun listSum1(list: List<Int>, acc: Int = 0): Int =
