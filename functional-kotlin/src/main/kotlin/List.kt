@@ -58,6 +58,19 @@ tailrec fun listSum1(list: List<Int>, acc: Int = 0): Int =
             listSum1(list.rest, acc + list.first)
     }
 
+fun <A> concat(list1: List<A>, list2: List<A>): List<A> =
+    when (list1) {
+        is Empty -> list2
+        is Cons ->
+            // concat(1 2 3, 4 5 6)
+            // list1.first = 1
+            // concat(list1.rest, list2) = concat(2 3, 4 5 6) = 2 3 4 5 6
+            Cons(list1.first, concat(list1.rest, list2))
+    }
+
+fun <A> concat2(list1: List<A>, list2: List<A>): List<A> =
+    // eta-Expansion
+    fold(list2, { f, r -> Cons(f, r) }, list1)
 
 
 val list1 = Cons(1, Empty)
