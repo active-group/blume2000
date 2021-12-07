@@ -23,13 +23,13 @@
 sealed interface DB
 data class Get(val key: String, val cont: (Int) -> DB)
 data class Put(val key: String, val value: Int, val cont: (Unit) -> DB)
-data class Done(result: Int)
+data class Done(val result: Int)
 
 val p1 = Put("Mike", 50) {
          Get("Mike") { x ->
          Put("Mike", x+1) {
          Get("Mike") { y ->
              Done(x + y)
-         }    
+         }
          }
 }
