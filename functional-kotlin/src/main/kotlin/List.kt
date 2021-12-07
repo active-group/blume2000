@@ -58,6 +58,8 @@ tailrec fun listSum1(list: List<Int>, acc: Int = 0): Int =
             listSum1(list.rest, acc + list.first)
     }
 
+
+
 val list1 = Cons(1, Empty)
 val list2 = Cons(1, Cons(2, Empty))
 // 3elementige Liste: 3 5 7
