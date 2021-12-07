@@ -20,10 +20,10 @@
 // FP: Lambda!
 // NodeJS: Callback, FP: Continuation
 
-sealed interface DB
-data class Get(val key: String, val cont: (Int) -> DB)
-data class Put(val key: String, val value: Int, val cont: (Unit) -> DB)
-data class Done(val result: Int)
+sealed interface DB<out A>
+data class Get<out A>(val key: String, val cont: (Int) -> DB<A>): DB<A>
+data class Put<out A>(val key: String, val value: Int, val cont: (Unit) -> DB<A>): DB<A>
+data class Done<out A>(val result: A): DB<A>
 
 val p1 = Put("Mike", 50) {
          Get("Mike") { x ->
@@ -32,4 +32,5 @@ val p1 = Put("Mike", 50) {
              Done(x + y)
          }
          }
-}
+             }}
+
