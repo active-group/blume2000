@@ -72,7 +72,7 @@ fun <A> concat2(list1: List<A>, list2: List<A>): List<A> =
     // eta-Expansion
     fold(list2, { f, r -> Cons(f, r) }, list1)
 
-fun <A, B> map(f: (A) -> B, list: List<A>): List<B> =
+fun <A, B> listMap(f: (A) -> B, list: List<A>): List<B> =
     when (list) {
         is Empty -> Empty
         is Cons ->
@@ -84,15 +84,26 @@ sealed interface Option<out A>
 object None : Option<Nothing>
 data class Some<out A>(val value: A) : Option<A>
 
+fun <A, B> optionMap(f: (A) -> B, option: Option<A>): Option<B> =
+    when (option) {
+        is None -> None
+        is Some ->
+            Some(f(option.value))
+    }
+
 fun <A> listIndex(a: A, list: List<A>): Option<Int> =
     when (list) {
         is Empty -> None
         is Cons ->
             if (list.first == a)
-                0
-            else when (listIndex(a, list.rest)) {
-                is None -> TODO()
-                is Some -> TODO()
+                Some(0)
+            else {
+                val r = listIndex(a, list.rest)
+                when (r) {
+                    is None -> None
+                    is Some ->
+                        Some(r.value + 1)
+                }
             }
     }
 
