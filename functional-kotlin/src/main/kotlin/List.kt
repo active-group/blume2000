@@ -8,7 +8,7 @@
 //                                                       ^^^^^
 // gemischte Daten
 // Kotlin: ein Interface obendrüber, Unterklassen
-sealed interface List<in A>
+sealed interface List<out A>
 
 // Angenommen A < B
 // Wie ist die Beziehung zwischen List<A> und List<B>?
@@ -21,7 +21,7 @@ object Empty : List<Nothing>
 // "construct"
 // Haskell :
 // zusammengesetzte Daten
-data class Cons<A>(val first: A, val rest: List<A>) : List<A>
+data class Cons<out A>(val first: A, val rest: List<A>) : List<A>
 
 // Summe aller Listenelemente
 // wir brauchen: List<Nothing> < List<Int> für Empty
