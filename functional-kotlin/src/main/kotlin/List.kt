@@ -72,6 +72,20 @@ fun <A> concat2(list1: List<A>, list2: List<A>): List<A> =
     // eta-Expansion
     fold(list2, { f, r -> Cons(f, r) }, list1)
 
+fun <A, B> map(f: (A) -> B, list: List<A>): List<B> =
+    when (list) {
+        is Empty -> Empty
+        is Cons ->
+            Cons(f(list.first), map(f, list.rest))
+    }
+
+fun <A> listIndex(a: A, list: List<A>): Int? =
+    when (list) {
+        is Empty -> null
+        is Cons ->
+            list.first + listIndex(a, list.rest)?
+    }
+
 
 val list1 = Cons(1, Empty)
 val list2 = Cons(1, Cons(2, Empty))
