@@ -76,10 +76,26 @@ fun <A, B> listMap(f: (A) -> B, list: List<A>): List<B> =
     when (list) {
         is Empty -> Empty
         is Cons ->
-            Cons(f(list.first), map(f, list.rest))
+            Cons(f(list.first), listMap(f, list.rest))
     }
 
-sealed interface Option<out A>
+fun <A, B> listFlatMap(f: (A) -> List<B>, list: List<A>): List<B> =
+    when (list) {
+        is Empty -> Empty
+        is Cons ->
+            concat(f(list.first), listFlatMap(f, list.rest))
+    }
+
+// Monade M ... M<A> ist ein Typ
+// 2 Operationen:
+// fun <A> unit(a: A): M<A>
+// fun <A, B> flatMap(f: (A) -> M<B>, option: M<A>): M<B>
+// auch genannt: "bind", Haskell: >>=
+
+sealed interface Option<out A> {
+    fun <B> map(f: (A) -> B) = optionMap(f, this)
+    fun <B> flatMap(f: (A) -> Option<B>) = optionFlatMap(f, this)
+}
 
 object None : Option<Nothing>
 data class Some<out A>(val value: A) : Option<A>
@@ -91,6 +107,13 @@ fun <A, B> optionMap(f: (A) -> B, option: Option<A>): Option<B> =
             Some(f(option.value))
     }
 
+fun <A, B> optionFlatMap(f: (A) -> Option<B>, option: Option<A>): Option<B> =
+    when (option) {
+        is None -> None
+        is Some ->
+            f(option.value)
+    }
+
 fun <A> listIndex(a: A, list: List<A>): Option<Int> =
     when (list) {
         is Empty -> None
@@ -98,14 +121,33 @@ fun <A> listIndex(a: A, list: List<A>): Option<Int> =
             if (list.first == a)
                 Some(0)
             else {
-                val r = listIndex(a, list.rest)
-                when (r) {
-                    is None -> None
-                    is Some ->
-                        Some(r.value + 1)
-                }
+//                val r = listIndex(a, list.rest)
+//                when (r) {
+//                    is None -> None
+//                    is Some ->
+//                        Some(r.value + 1)
+//                }
+                listIndex(a, list.rest).map { index -> index + 1 }
             }
     }
+
+data class Result1(val foo: Int)
+data class Result2(val foo: Int)
+data class Result3(val foo: Int)
+
+fun step1(a: Int): Option<Result1> = TODO()
+fun step2(b: Int): Option<Result2> = TODO()
+fun step3(r1: Result1, r2: Result2): Int = TODO()
+
+fun computation(a: Int, b: Int): Option<Int> =
+    step1(a).flatMap { r1 ->
+        step2(b).map { r2 -> step3(r1, r2) }
+    }
+
+
+
+
+
 
 
 val list1 = Cons(1, Empty)
