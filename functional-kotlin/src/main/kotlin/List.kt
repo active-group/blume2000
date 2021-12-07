@@ -79,11 +79,21 @@ fun <A, B> map(f: (A) -> B, list: List<A>): List<B> =
             Cons(f(list.first), map(f, list.rest))
     }
 
-fun <A> listIndex(a: A, list: List<A>): Int? =
+sealed interface Option<out A>
+
+object None : Option<Nothing>
+data class Some<out A>(val value: A) : Option<A>
+
+fun <A> listIndex(a: A, list: List<A>): Option<Int> =
     when (list) {
-        is Empty -> null
+        is Empty -> None
         is Cons ->
-            list.first + listIndex(a, list.rest)?
+            if (list.first == a)
+                0
+            else when (listIndex(a, list.rest)) {
+                is None -> TODO()
+                is Some -> TODO()
+            }
     }
 
 
