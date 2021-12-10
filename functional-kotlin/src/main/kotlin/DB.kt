@@ -89,6 +89,7 @@ fun add(a: Int, b: Int): Int = a + b
 fun add1(a: Int): (Int) -> Int = { b -> a + b}
 
 // add1(a)(b)
+// Haskell add1 a b == (add1 a) b
 
 // Haskell B. Curry
 // Moses Schönfinkel
