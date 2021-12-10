@@ -13,3 +13,4 @@ fun <A, B, E> validatedMap(f: (A) -> B, v: Validated<A, E>): Validated<B, E> =
     }
 
 // Arrow-kt: Validated<E, A>
+// Haskell: (Validated E) A

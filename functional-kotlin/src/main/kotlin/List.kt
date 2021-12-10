@@ -92,6 +92,25 @@ fun <A, B> listFlatMap(f: (A) -> List<B>, list: List<A>): List<B> =
 // fun <A, B> flatMap(f: (A) -> M<B>, option: M<A>): M<B>
 // auch genannt: "bind", Haskell: >>=
 
+/*
+interface Functor<F> { // hier darf leider kein Typ stehen, der einen Typparameter verlangt/braucht/hat
+    fun <A, B> map(f: (A) -> B, thing: F<A>): F<B>
+}
+
+object listFunctor: Functor<List> {
+    fun <A, B> map(f: (A) -> B, thing: List<A>): List<B> = listMap(f, thing)
+}
+
+object optionFunctor: Functor<Option> {
+    fun <A, B> map(f: (A) -> B, thing: Option<A>): Option<B> = optionMap(f, thing)
+}
+
+object validatedFunctor<E>: Functor<Validated<???, E>>
+
+// Haskell: Functor (Validated E)
+
+ */
+
 sealed interface Option<out A> {
     fun <B> map(f: (A) -> B) = optionMap(f, this)
     fun <B> flatMap(f: (A) -> Option<B>) = optionFlatMap(f, this)
