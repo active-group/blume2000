@@ -12,6 +12,8 @@ interface Kind<out F, out A>
 
 typealias ListOf<A> = Kind<ForList, A>
 
+fun <A> ListOf<A>.fix(): List<A> = this as List<A>
+
 interface Functor<F> {
     // fun <A, B> map(f: (A) -> B, thing: F<A>): F<B>
     // stattdessen:
@@ -19,7 +21,9 @@ interface Functor<F> {
 }
 
 object listFunctor: Functor<ForList> {
-    fun <A, B> map(f: (A) -> B, thing: Kind<ForList, A>): Kind<ForList, B>
+    // fun <A, B> map(f: (A) -> B, thing: Kind<ForList, A>): Kind<ForList, B>
+    override fun <A, B> map(f: (A) -> B, thing: ListOf<A>): ListOf<B> =
+        listMap(f, thing.fix())
 }
 // Eine Liste ist eins der folgenden:
 // - die leere Liste
