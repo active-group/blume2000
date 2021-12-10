@@ -18,11 +18,11 @@ fun <A, B, E> validatedMap(f: (A) -> B, v: Validated<A, E>): Validated<B, E> =
 
 fun <A, B, C, E> validatedMap2(f: (A, B) -> C, va: Validated<A, E>, vb: Validated<B, E>): Validated<C, E> =
     // curry(f): (A) -> ((B) -> C)
-    validateAp(validatedMap(curry(f), va), vb)
+    validatedAp(validatedMap(curry(f), va), vb)
 
 fun <A, B, C, D, E> validatedMap3(f: (A, B, C) -> D, va: Validated<A, E>, vb: Validated<B, E>, vc: Validated<C, E>): Validated<D, E> =
     // curry(f): (A) -> ((B) -> C)
-    validateAp(validateAp(validatedMap(curry3(f), va), vb), vc)
+    validatedAp(validatedAp(validatedMap(curry3(f), va), vb), vc)
 
 fun <A, B, C, D> curry3(f: (A, B, C) -> D): (A) -> (B) -> (C) -> D =
     { a -> { b -> { c -> f(a, b, c)}}}
@@ -46,7 +46,7 @@ fun <A, B, C, D> curry3(f: (A, B, C) -> D): (A) -> (B) -> (C) -> D =
 
 // Funktor -> Applicative -> Monade
 
-fun <A, B, E> validateAp(f: Validated<(A) -> B, E>, v: Validated<A, E>): Validated<B, E> =
+fun <A, B, E> validatedAp(f: Validated<(A) -> B, E>, v: Validated<A, E>): Validated<B, E> =
     when (f) {
         is Valid ->
             when (v) {
