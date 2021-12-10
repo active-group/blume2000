@@ -35,4 +35,15 @@ val p1 = Put("Mike", 50) {
          }
              }}
 
-fun <A> runDB(db: DB<A>, storage: Map<String, Int>): A = TODO()
+// gehört in den Adapter
+tailrec fun <A> runDB(db: DB<A>, storage: MutableMap<String, Int>): A =
+    when (db) {
+        is Get ->
+             runDB(db.cont(storage[db.key]!!), storage)
+        is Put -> {
+            storage[db.key] = db.value
+            // runDB(db.cont(Unit), storage + Pair(db.key, db.value))
+            runDB(db.cont(Unit), storage)
+        }
+        is Done -> db.result
+    }
