@@ -2,6 +2,10 @@
 // FP-Methoden: filter map
 // drunter: ArrayList
 
+interface Functor<F> {
+    fun <A, B> map(f: (A) -> B, thing: F<A>): F<B>
+}
+
 // Eine Liste ist eins der folgenden:
 // - die leere Liste
 // - eine Cons-Liste besteht aus erstem Element und Rest-Liste
