@@ -47,3 +47,10 @@ tailrec fun <A> runDB(db: DB<A>, storage: MutableMap<String, Int>): A =
         }
         is Done -> db.result
     }
+
+fun <A, B> dbMap(f: (A) -> B, db: DB<A>): DB<B> =
+    when (db) {
+        is Get -> Get(db.key) { value -> dbMap(f, db.cont(value)) }
+        is Put -> Put(db.key, db.value) { unit -> dbMap(f, db.cont(unit)) }
+        is Done -> TODO()
+    }
