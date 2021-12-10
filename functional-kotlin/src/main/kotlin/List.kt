@@ -2,17 +2,32 @@
 // FP-Methoden: filter map
 // drunter: ArrayList
 
-interface Functor<F> {
-    fun <A, B> map(f: (A) -> B, thing: F<A>): F<B>
+// brauchen etwas, das "Listen ohne Typparameter" repräsentiert
+class ForList private constructor() {
+    companion object
 }
 
+// Verbindung von "Liste" mit "Typparameter"
+interface Kind<out F, out A>
+
+typealias ListOf<A> = Kind<ForList, A>
+
+interface Functor<F> {
+    // fun <A, B> map(f: (A) -> B, thing: F<A>): F<B>
+    // stattdessen:
+    fun <A, B> map(f: (A) -> B, thing: Kind<F, A>): Kind<F, B>
+}
+
+object listFunctor: Functor<ForList> {
+    fun <A, B> map(f: (A) -> B, thing: Kind<ForList, A>): Kind<ForList, B>
+}
 // Eine Liste ist eins der folgenden:
 // - die leere Liste
 // - eine Cons-Liste besteht aus erstem Element und Rest-Liste
 //                                                       ^^^^^ Selbstreferenz
 // gemischte Daten
 // Kotlin: ein Interface obendrüber, Unterklassen
-sealed interface List<out A>
+sealed interface List<out A> : ListOf<A>
 
 // Angenommen A < B
 // Wie ist die Beziehung zwischen List<A> und List<B>?
