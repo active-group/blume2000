@@ -1,8 +1,16 @@
+class ForValidated private constructor() {
+    companion object
+}
+
+typealias Kind2<F, A, B> = Kind<Kind<F, A>, B>
+
+typealias ValidatedOf<A, E> = Kind2<ForValidated, E, A>
+
 // Validieren
 // Etwas validiertes ist eins der folgenden:
 // - entweder ist alles richtig: ein Ergebnis
 // - ODER es gibt eine Liste von Problemen
-sealed interface Validated<out A, out E> {
+sealed interface Validated<out A, out E>: ValidatedOf<A, E> {
     // Varianzproblem
     // fun <B> ap(f: Validated<(A) -> B, E>): Validated<B, E> =
     //    validatedAp(f, this)
@@ -65,7 +73,28 @@ fun <A, B, E> validatedAp(f: Validated<(A) -> B, E>, v: Validated<A, E>): Valida
             }
     }
 
+interface Applicative<F> : Functor<F> {
+    fun <A, B> ap(f: Kind<F, (A) -> B>, thing: Kind<F, A>): Kind<F, B>
 
+    fun <A, B, C> map2(f: (A, B) -> C, thinga: Kind<F, A>, thingb: Kind<F, B>): Kind<F, C> =
+        this.ap(this.map(curry(f), thinga), thingb)
+
+}
+
+fun <A, E> ValidatedOf<A, E>.fix() = this as Validated<A, E>
+
+open class ValidatedFunctor<E> : Functor<Kind<ForValidated, E>> {
+    override fun <A, B> map(f: (A) -> B, thing: Kind<Kind<ForValidated, E>, A>): Kind<Kind<ForValidated, E>, B> =
+        validatedMap(f, thing.fix())
+}
+
+class ValidatedApplicative<E> : Applicative<Kind<ForValidated, E>>, ValidatedFunctor<E>() {
+    override fun <A, B> ap(
+        f: Kind<Kind<ForValidated, E>, (A) -> B>,
+        thing: Kind<Kind<ForValidated, E>, A>
+    ): Kind<Kind<ForValidated, E>, B> =
+        validatedAp(f.fix(), thing.fix())
+}
 
 // flatMap inhärent sequenziell // Abhängigkeit
 fun <A, B, E> validatedFlatMap(f: (A) -> Validated<B, E>, v: Validated<A, E>): Validated<B, E> =
