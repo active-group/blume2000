@@ -35,6 +35,10 @@ val p1 = Put("Mike", 50) {
          }
              }}
 
+fun get(key: String): DB<Int> = Get(key, { value -> Done(value)} )
+fun put(key: String, value: Int): DB<Unit> =
+    Put(key, value, { unit -> Done(unit)} )
+
 // gehört in den Adapter
 tailrec fun <A> runDB(db: DB<A>, storage: MutableMap<String, Int>): A =
     when (db) {
