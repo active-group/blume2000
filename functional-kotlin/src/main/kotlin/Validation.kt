@@ -17,7 +17,7 @@ fun <A, B, C, E> validatedMap2(f: (A, B) -> C, va: Validated<A, E>, vb: Validate
     // curry(f): (A) -> ((B) -> C)
     validateAp(validatedMap(curry(f), va), vb)
 
-fun <A, B, C, D, E> validatedMap2(f: (A, B, C) -> D, va: Validated<A, E>, vb: Validated<B, E>, vc: Validated<C, E>): Validated<D, E> =
+fun <A, B, C, D, E> validatedMap3(f: (A, B, C) -> D, va: Validated<A, E>, vb: Validated<B, E>, vc: Validated<C, E>): Validated<D, E> =
     // curry(f): (A) -> ((B) -> C)
     validateAp(validateAp(validatedMap(curry3(f), va), vb), vc)
 
