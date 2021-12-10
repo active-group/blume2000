@@ -3,11 +3,15 @@
 // - entweder ist alles richtig: ein Ergebnis
 // - ODER es gibt eine Liste von Problemen
 sealed interface Validated<out A, out E> {
-    fun <A, B, E> validateAp(f: Validated<(A) -> B, E>): Validated<B, E> =
-        validatedAp(f, this)
+    // Varianzproblem
+    // fun <B> ap(f: Validated<(A) -> B, E>): Validated<B, E> =
+    //    validatedAp(f, this)
 }
 data class Valid<out A>(val result: A) : Validated<A, Nothing>
 data class Invalid<out E>(val errors: List<E>): Validated<Nothing, E>
+
+fun <A, B, E> Validated<(A) -> B, E>.ap(v: Validated<A, E>): Validated<B, E> =
+    validatedAp(this, v)
 
 fun <A, B, E> validatedMap(f: (A) -> B, v: Validated<A, E>): Validated<B, E> =
     when (v) {
@@ -18,11 +22,12 @@ fun <A, B, E> validatedMap(f: (A) -> B, v: Validated<A, E>): Validated<B, E> =
 
 fun <A, B, C, E> validatedMap2(f: (A, B) -> C, va: Validated<A, E>, vb: Validated<B, E>): Validated<C, E> =
     // curry(f): (A) -> ((B) -> C)
-    validatedAp(validatedMap(curry(f), va), vb)
+    validatedMap(curry(f), va).ap(vb)
 
 fun <A, B, C, D, E> validatedMap3(f: (A, B, C) -> D, va: Validated<A, E>, vb: Validated<B, E>, vc: Validated<C, E>): Validated<D, E> =
     // curry(f): (A) -> ((B) -> C)
-    validatedAp(validatedAp(validatedMap(curry3(f), va), vb), vc)
+    validatedMap(curry3(f), va).ap(vb).ap(vc)
+    // validatedAp(validatedAp(validatedMap(curry3(f), va), vb), vc)
 
 fun <A, B, C, D> curry3(f: (A, B, C) -> D): (A) -> (B) -> (C) -> D =
     { a -> { b -> { c -> f(a, b, c)}}}
@@ -70,3 +75,16 @@ fun <A, B, E> validatedFlatMap(f: (A) -> Validated<B, E>, v: Validated<A, E>): V
     }
 // Arrow-kt: Validated<E, A>
 // Haskell: (Validated E) A
+
+// "parse, don't validate"
+// parse number from string
+fun numberString(text: String): Validated<Int, String> =
+    text.toIntOrNull()?.let { n -> Valid(n) }
+        ?: Invalid(Cons("not a number representation: $text", Empty))
+
+val s1 = "123"
+val s2 = "456"
+
+fun addNumberStrings(n1: String, n2: String): Validated<Int, String> =
+    validatedMap2(Int::plus, numberString(n1), numberString(n2))
+

@@ -17,6 +17,12 @@ fun greater(foo: Tagged<NonZero, Foo>): Option<Tagged<Greater, Foo>> =
     else
         None
 
+fun greaterV(foo: Tagged<NonZero, Foo>): Validated<Tagged<Greater, Foo>, String> =
+    if (foo.value.a > foo.value.b)
+        Valid(Tagged(foo.value))
+    else
+        Invalid(Cons("not greater", Empty))
+
 val foo1: Tagged<NonZero, Foo> = Tagged(Foo(1, -1))
 val foo2 = nonZero(foo1)
 val foo3 = foo2.flatMap { greater(it) }
