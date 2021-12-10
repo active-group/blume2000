@@ -52,5 +52,5 @@ fun <A, B> dbMap(f: (A) -> B, db: DB<A>): DB<B> =
     when (db) {
         is Get -> Get(db.key) { value -> dbMap(f, db.cont(value)) }
         is Put -> Put(db.key, db.value) { unit -> dbMap(f, db.cont(unit)) }
-        is Done -> Done(f(db.value))
+        is Done -> Done(f(db.result))
     }
