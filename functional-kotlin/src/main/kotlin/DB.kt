@@ -21,7 +21,11 @@
 // NodeJS: Callback, FP: Continuation
 
 // Datenbank-Programm, das ein Ergebnis vom Typ A liefert
-sealed interface DB<out A>
+sealed interface DB<out A> {
+    fun <B> map(f: (A) -> B): DB<B> = dbMap(f, this)
+    fun <B> flatMap(f: (A) -> DB<B>): DB<B> = splice(this, f)
+}
+
 data class Get<out A>(val key: String, val cont: (Int) -> DB<A>): DB<A>
 data class Put<out A>(val key: String, val value: Int, val cont: (Unit) -> DB<A>): DB<A>
 data class Done<out A>(val result: A): DB<A>
@@ -38,6 +42,25 @@ val p1 = Put("Mike", 50) {
 fun get(key: String): DB<Int> = Get(key, { value -> Done(value)} )
 fun put(key: String, value: Int): DB<Unit> =
     Put(key, value, { unit -> Done(unit)} )
+
+val p1_ = put("Mike", 50).flatMap {
+          get("Mike").flatMap { x ->
+          put("Mike", x + 1).flatMap {
+          get("Mike").flatMap { y ->
+          Done(x+y)
+          }
+          }
+}}
+
+
+// DB ist eine Monade
+
+fun <A, B> splice(dba: DB<A>, dbf: (A) -> DB<B>): DB<B> =
+    when (dba) {
+        is Get -> Get(dba.key, { value -> splice(dba.cont(value), dbf) })
+        is Put -> Put(dba.key, dba.value, { unit -> splice(dba.cont(unit), dbf) })
+        is Done -> dbf(dba.result)
+    }
 
 // gehört in den Adapter
 tailrec fun <A> runDB(db: DB<A>, storage: MutableMap<String, Int>): A =
