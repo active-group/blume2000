@@ -55,4 +55,16 @@ fun <A, B> dbMap(f: (A) -> B, db: DB<A>): DB<B> =
         is Done -> Done(f(db.result))
     }
 
-// Im Lambda-Kalkül
+// Im Lambda-Kalkül gibt es nur Funktionen mit 1 Parameter / 1 Rückgabe
+// Was tun mit Funktionen, die mehrere Eingaben haben?
+fun add(a: Int, b: Int): Int = a + b
+
+fun add1(a: Int): (Int) -> Int = { b -> a + b}
+
+// add1(a)(b)
+
+// Haskell B. Curry
+// Moses Schönfinkel
+fun <A, B, C> curry(f: (A, B) -> C): (A) -> (B) -> C =
+    { a -> { b -> f(a, b)}}
+
